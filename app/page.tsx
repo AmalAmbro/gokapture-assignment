@@ -4,7 +4,7 @@ import sheetStore from '@/stores/sheetStore';
 
 
 export default function HomePage() {
-  const { grids, updateCell, resetCell } = sheetStore()
+  const { grids, updateCell } = sheetStore()
   const [editingCell, setEditingCell] = useState({ row: null, col: null });
   const handleChange = (row, col, value) => {
     updateCell(row, col, value);
@@ -12,8 +12,7 @@ export default function HomePage() {
 
   return (
     <div className="p-4">
-      <div className='pb-4'>Control bar</div>
-      <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-4 mt-4">
         {grids.slice(0, 50).map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <div

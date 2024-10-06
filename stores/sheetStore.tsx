@@ -1,30 +1,35 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware'
 
-const gridsInitialize = () => {
+interface GridStore {
+    grids: string[][];
+    updateCell: (row: number, col: number, value: string) => void;
+  }
+
+let emptyGrids: string[][];
+const gridsInitialize = (): string[][] => {
     const rows = 100;
     const cols = 10;
-    return Array.from({ length: rows }, () =>
+    emptyGrids = Array.from({ length: rows }, () =>
         Array.from({ length: cols }, () => '')
-    );
+    )
+    return emptyGrids;
 }
 
-const sheetStore = create(
+
+const sheetStore = create<GridStore>()(
     persist(
-        (set) => ({
-            grids: gridsInitialize(),
-            // increase: () => set((state: any) => ({ count: state.count + 1 })),
-            // decrease: () => set((state: any) => ({ count: state.count - 1 })),
-            updateCell: (row, col, value) =>
-                set((state) => {
-                  const updatedCell = [...state.grids];
-                  updatedCell[row][col] = value;
-                  return { grids: updatedCell };
-                }),
-            resetCell: () => set({ grids: gridsInitialize() }),
-        }),
-        { name: 'gridcells-storage' }
-    ),
-);
+      (set) => ({
+        grids: gridsInitialize(),
+        updateCell: (row, col, value) =>
+          set((state) => {
+            const updatedCell = [...state.grids];
+            updatedCell[row][col] = value;
+            return { grids: updatedCell };
+          }),
+      }),
+      { name: 'gridcells-storage' }
+    )
+  );
 
 export default sheetStore;
